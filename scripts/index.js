@@ -39,7 +39,7 @@ function addNode() {
     }
 
     nodes.push(newNode);
-    console.log('pushing node: new node array length: ' + nodes.length);
+   // console.log('pushing node: new node array length: ' + nodes.length);
 
 }
 
