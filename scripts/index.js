@@ -24,6 +24,7 @@ render()
 
 window.addEventListener('resize', init)
 function addNode() {
+   //add a node to the canvas
     wWidth = window.innerWidth * pixelRatio
     wHeight = window.innerHeight * pixelRatio
     wArea = wWidth * wHeight
@@ -39,12 +40,14 @@ function addNode() {
     }
 
     nodes.push(newNode);
+
    // console.log('pushing node: new node array length: ' + nodes.length);
 
 }
 
 canvas.addEventListener('click', function (e) {
     addNode();
+    getCursorPosition(this,e);
 })
 
 
@@ -176,19 +179,30 @@ function render() {
     }
     // update nodes
     for (i = 0, len = nodes.length; i < len; i++) {
-        ctx.beginPath()
-        ctx.arc(nodes[i].x, nodes[i].y, nodes[i].m, 0, 2 * Math.PI)
-        ctx.fill()
-
-        nodes[i].x += nodes[i].vx
-        nodes[i].y += nodes[i].vy
-
-        if (nodes[i].x > wWidth + 25 || nodes[i].x < -25 || nodes[i].y > wHeight + 25 || nodes[i].y < -25) {
-            // if node over screen limits - reset to a init position
-            nodes[i].x = Math.random() * wWidth
-            nodes[i].y = Math.random() * wHeight
-            nodes[i].vx = Math.random() * 1 - 0.5
-            nodes[i].vy = Math.random() * 1 - 0.5
-        }
+        drawNode(nodes[i]);
     }
+}
+
+function drawNode(node){
+    ctx.beginPath()
+    ctx.arc(node.x, node.y,node.m, 0, 2 * Math.PI)
+    ctx.fill()
+
+    node.x += node.vx
+    node.y += node.vy
+
+    if (node.x > wWidth + 25 || node.x < -25 || node.y > wHeight + 25 || node.y < -25) {
+        // if node over screen limits - reset to a init position
+        node.x = Math.random() * wWidth
+        node.y = Math.random() * wHeight
+        node.vx = Math.random() * 1 - 0.5
+        node.vy = Math.random() * 1 - 0.5
+    }
+}
+//jgy3183
+function getCursorPosition(canvas, event) {
+    var rect = canvas.getBoundingClientRect();
+    var x = event.clientX - rect.left;
+    var y = event.clientY - rect.top;
+    console.log("x: " + x + " y: " + y);
 }
